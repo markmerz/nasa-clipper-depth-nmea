@@ -13,6 +13,9 @@
 
 // #define MY_DEBUG
 
+#define ECHOSOUNDER_DEPTH "0.5"
+#define ECHOSOUNDER_MAX_VALUE "99.9"
+
 #include <Wire.h>
 
 #define TIMER_INTERRUPT_DEBUG      0
@@ -252,7 +255,7 @@ void receiveEvent(int howMany) {
         int result_dec = ((int) (result_in_meters * 10)) % 10;
         char nmea_sub_sentence[32];
         char nmea_full_sentence[128];
-        sprintf(nmea_sub_sentence, "YXDPT,%i.%i,0.5,99.9", result_int, result_dec);
+        sprintf(nmea_sub_sentence, "YXDPT,%i.%i,%s,%s", result_int, result_dec, ECHOSOUNDER_DEPTH, ECHOSOUNDER_MAX_VALUE);
         char* checksum = calculate_nmea_checksum(nmea_sub_sentence);
         sprintf(nmea_full_sentence, "$%s*%s\r\n", nmea_sub_sentence, checksum);
         Serial.print(nmea_full_sentence);
